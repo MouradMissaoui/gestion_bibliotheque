@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test API Bibliothèque</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="assets/css/custom.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container my-5">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h1 class="h3 mb-0"><i class="fas fa-flask"></i> Test API Gestion Bibliothèque</h1>
+            </div>
+            <div class="card-body">
+                
+                <!-- Info API -->
+                <div class="alert alert-info">
+                    <strong><i class="fas fa-link"></i> URL de base :</strong> 
+                    <code>http://localhost/gestion_bibliotheque/api</code>
+                </div>
+                
+                <!-- Tests Préliminaires -->
+                <div class="mb-4">
+                    <h5 class="border-bottom pb-2"><i class="fas fa-check-circle"></i> Tests Préliminaires</h5>
+                    <button class="btn btn-secondary" onclick="testJavaScript()">
+                        <i class="fas fa-code"></i> Vérifier JavaScript
+                    </button>
+                    <button class="btn btn-secondary ms-2" onclick="testAPIDirectly()">
+                        <i class="fas fa-globe"></i> Tester API Direct
+                    </button>
+                </div>
+                
+                <!-- Tests LIVRES -->
+                <div class="mb-4">
+                    <h5 class="border-bottom pb-2"><i class="fas fa-book"></i> API Livres</h5>
+                    <button class="btn btn-success btn-sm" onclick="testGet('livres')">
+                        <i class="fas fa-list"></i> GET /livres
+                    </button>
+                    <button class="btn btn-success btn-sm ms-2" onclick="testGetOne('livres')">
+                        <i class="fas fa-book-open"></i> GET /livres/{ISBN}
+                    </button>
+                    <button class="btn btn-primary btn-sm ms-2" onclick="testCreateLivre()">
+                        <i class="fas fa-plus"></i> POST /livres
+                    </button>
+                    <button class="btn btn-warning btn-sm ms-2" onclick="testUpdateLivre()">
+                        <i class="fas fa-pencil-alt"></i> PUT /livres/{ISBN}
+                    </button>
+                    <button class="btn btn-danger btn-sm ms-2" onclick="testDeleteLivre()">
+                        <i class="fas fa-times"></i> DELETE /livres/{ISBN}
+                    </button>
+                </div>
+                
+                <!-- Tests MEMBRES -->
+                <div class="mb-4">
+                    <h5 class="border-bottom pb-2"><i class="fas fa-users"></i> API Membres</h5>
+                    <button class="btn btn-success btn-sm" onclick="testGet('membres')">
+                        <i class="fas fa-list"></i> GET /membres
+                    </button>
+                    <button class="btn btn-success btn-sm ms-2" onclick="testGetOne('membres')">
+                        <i class="fas fa-user"></i> GET /membres/{id}
+                    </button>
+                    <button class="btn btn-primary btn-sm ms-2" onclick="testCreateMembre()">
+                        <i class="fas fa-plus"></i> POST /membres
+                    </button>
+                    <button class="btn btn-warning btn-sm ms-2" onclick="testUpdateMembre()">
+                        <i class="fas fa-pencil-alt"></i> PUT /membres/{id}
+                    </button>
+                    <button class="btn btn-danger btn-sm ms-2" onclick="testDeleteMembre()">
+                        <i class="fas fa-times"></i> DELETE /membres/{id}
+                    </button>
+                </div>
+                
+                <!-- Tests EMPRUNTS -->
+                <div class="mb-4">
+                    <h5 class="border-bottom pb-2"><i class="fas fa-exchange-alt"></i> API Emprunts</h5>
+                    <button class="btn btn-success btn-sm" onclick="testGet('emprunts')">
+                        <i class="fas fa-list"></i> GET /emprunts
+                    </button>
+                    <button class="btn btn-success btn-sm ms-2" onclick="testGetOne('emprunts')">
+                        <i class="fas fa-info-circle"></i> GET /emprunts/{id}
+                    </button>
+                    <button class="btn btn-primary btn-sm ms-2" onclick="testCreateEmprunt()">
+                        <i class="fas fa-plus"></i> POST /emprunts
+                    </button>
+                    <button class="btn btn-warning btn-sm ms-2" onclick="testRetourEmprunt()">
+                        <i class="fas fa-undo"></i> PUT /emprunts/{id} (Retour)
+                    </button>
+                    <button class="btn btn-info btn-sm ms-2" onclick="testProlongerEmprunt()">
+                        <i class="fas fa-clock"></i> PUT /emprunts/{id} (Prolonger)
+                    </button>
+                </div>
+                
+                <!-- Tests RESERVATIONS -->
+                <div class="mb-4">
+                    <h5 class="border-bottom pb-2"><i class="fas fa-bookmark"></i> API Réservations</h5>
+                    <button class="btn btn-success btn-sm" onclick="testGet('reservations')">
+                        <i class="fas fa-list"></i> GET /reservations
+                    </button>
+                    <button class="btn btn-success btn-sm ms-2" onclick="testGetOne('reservations')">
+                        <i class="fas fa-info-circle"></i> GET /reservations/{id}
+                    </button>
+                    <button class="btn btn-primary btn-sm ms-2" onclick="testCreateReservation()">
+                        <i class="fas fa-plus"></i> POST /reservations
+                    </button>
+                    <button class="btn btn-warning btn-sm ms-2" onclick="testUpdateReservation()">
+                        <i class="fas fa-pencil-alt"></i> PUT /reservations/{id}
+                    </button>
+                    <button class="btn btn-danger btn-sm ms-2" onclick="testDeleteReservation()">
+                        <i class="fas fa-times"></i> DELETE /reservations/{id}
+                    </button>
+                </div>
+                
+                <!-- Tests AMENDES -->
+                <div class="mb-4">
+                    <h5 class="border-bottom pb-2"><i class="fas fa-dollar-sign"></i> API Amendes</h5>
+                    <button class="btn btn-success btn-sm" onclick="testGet('amendes')">
+                        <i class="fas fa-list"></i> GET /amendes
+                    </button>
+                    <button class="btn btn-success btn-sm ms-2" onclick="testGetOne('amendes')">
+                        <i class="fas fa-info-circle"></i> GET /amendes/{id}
+                    </button>
+                    <button class="btn btn-warning btn-sm ms-2" onclick="testPayerAmende()">
+                        <i class="fas fa-money-bill"></i> PUT /amendes/{id} (Payer)
+                    </button>
+                </div>
+                
+                <!-- Tests STATS -->
+                <div class="mb-4">
+                    <h5 class="border-bottom pb-2"><i class="fas fa-chart-bar"></i> API Statistiques</h5>
+                    <button class="btn btn-success btn-sm" onclick="testGet('stats')">
+                        <i class="fas fa-chart-line"></i> GET /stats
+                    </button>
+                    <button class="btn btn-success btn-sm ms-2" onclick="testGetStats('top-livres')">
+                        <i class="fas fa-trophy"></i> GET /stats/top-livres
+                    </button>
+                    <button class="btn btn-success btn-sm ms-2" onclick="testGetStats('top-membres')">
+                        <i class="fas fa-trophy"></i> GET /stats/top-membres
+                    </button>
+                </div>
+                
+                <!-- Résultat -->
+                <div class="mt-4">
+                    <h5 class="border-bottom pb-2"><i class="fas fa-terminal"></i> Résultat</h5>
+                    <pre id="result" class="bg-dark text-light p-3 rounded" style="min-height: 200px; max-height: 500px; overflow-y: auto;">En attente de test...</pre>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const API_URL = 'http://localhost/gestion_bibliotheque/api';
+        const resultDiv = document.getElementById('result');
+
+        function displayResult(method, endpoint, requestData, responseData, status) {
+            const timestamp = new Date().toLocaleTimeString();
+            const statusClass = status < 400 ? 'text-success' : 'text-danger';
+            
+            resultDiv.innerHTML = `
+<span class="${statusClass}">═══════════════════════════════════════════</span>
+<span class="${statusClass}">🕐 ${timestamp} - ${method} ${endpoint}</span>
+<span class="${statusClass}">Status HTTP: ${status}</span>
+<span class="${statusClass}">═══════════════════════════════════════════</span>
+
+${requestData ? `📤 REQUÊTE ENVOYÉE:
+${JSON.stringify(requestData, null, 2)}
+
+` : ''}📥 RÉPONSE REÇUE:
+${JSON.stringify(responseData, null, 2)}
+            `.trim();
+        }
+
+        function displayError(method, endpoint, error) {
+            const timestamp = new Date().toLocaleTimeString();
+            resultDiv.innerHTML = `
+<span class="text-danger">═══════════════════════════════════════════</span>
+<span class="text-danger">🕐 ${timestamp} - ${method} ${endpoint}</span>
+<span class="text-danger">❌ ERREUR</span>
+<span class="text-danger">═══════════════════════════════════════════</span>
+
+Type: ${error.name}
+Message: ${error.message}
+
+💡 SOLUTIONS POSSIBLES:
+1. Vérifiez que Apache/PHP est démarré
+2. Vérifiez l'URL de l'API
+3. Ouvrez la Console (F12) pour plus de détails
+4. Vérifiez les erreurs CORS
+            `.trim();
+            console.error('Erreur complète:', error);
+        }
+
+        // ========== TESTS PRÉLIMINAIRES ==========
+        
+        function testJavaScript() {
+            console.log('✅ Test JavaScript');
+            alert('✅ JavaScript fonctionne correctement !');
+            resultDiv.textContent = '✅ JavaScript est opérationnel !';
+        }
+
+        async function testAPIDirectly() {
+            resultDiv.textContent = '⏳ Ouverture de l\'API dans un nouvel onglet...';
+            window.open(`${API_URL}/livres`, '_blank');
+            setTimeout(() => {
+                resultDiv.textContent = '💡 Vérifiez l\'onglet ouvert. Vous devriez voir du JSON.';
+            }, 500);
+        }
+
+        // ========== FONCTIONS GÉNÉRIQUES ==========
+        
+        async function testGet(resource) {
+            try {
+                resultDiv.textContent = '⏳ Chargement...';
+                const response = await fetch(`${API_URL}/${resource}`);
+                const data = await response.json();
+                displayResult('GET', `/${resource}`, null, data, response.status);
+            } catch (error) {
+                displayError('GET', `/${resource}`, error);
+            }
+        }
+
+        async function testGetOne(resource) {
+            const id = prompt(`📚 Entrez un ID/ISBN pour ${resource}:`, resource === 'livres' ? 'ISBN123' : '1');
+            if (!id) return;
+            
+            try {
+                resultDiv.textContent = '⏳ Chargement...';
+                const response = await fetch(`${API_URL}/${resource}/${id}`);
+                const data = await response.json();
+                displayResult('GET', `/${resource}/${id}`, null, data, response.status);
+            } catch (error) {
+                displayError('GET', `/${resource}/${id}`, error);
+            }
+        }
+
+        // ========== TESTS LIVRES ==========
+        
+        async function testCreateLivre() {
+            const livre = {
+                ISBN: 'TEST' + Date.now(),
+                titre: 'Livre de Test',
+                auteur: 'Auteur Test',
+                annee: 2024
+            };
+            
+            try {
+                resultDiv.textContent = '⏳ Création en cours...';
+                const response = await fetch(`${API_URL}/livres`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(livre)
+                });
+                const data = await response.json();
+                displayResult('POST', '/livres', livre, data, response.status);
+            } catch (error) {
+                displayError('POST', '/livres', error);
+            }
+        }
+
+        async function testUpdateLivre() {
+            const isbn = prompt('📚 Entrez un ISBN existant à modifier:', 'ISBN123');
+            if (!isbn) return;
+            
+            const livre = {
+                titre: 'Titre Modifié - ' + new Date().toLocaleTimeString(),
+                auteur: 'Auteur Modifié',
+                annee: 2025
+            };
+            
+            try {
+                resultDiv.textContent = '⏳ Modification en cours...';
+                const response = await fetch(`${API_URL}/livres/${isbn}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(livre)
+                });
+                const data = await response.json();
+                displayResult('PUT', `/livres/${isbn}`, livre, data, response.status);
+            } catch (error) {
+                displayError('PUT', `/livres/${isbn}`, error);
+            }
+        }
+
+        async function testDeleteLivre() {
+            const isbn = prompt('📚 Entrez un ISBN à supprimer:', 'TEST123');
+            if (!isbn || !confirm(`⚠️ Voulez-vous vraiment supprimer le livre ${isbn} ?`)) return;
+            
+            try {
+                resultDiv.textContent = '⏳ Suppression en cours...';
+                const response = await fetch(`${API_URL}/livres/${isbn}`, {
+                    method: 'DELETE'
+                });
+                const data = await response.json();
+                displayResult('DELETE', `/livres/${isbn}`, null, data, response.status);
+            } catch (error) {
+                displayError('DELETE', `/livres/${isbn}`, error);
+            }
+        }
+
+        // ========== TESTS MEMBRES ==========
+        
+        async function testCreateMembre() {
+            const membre = {
+                nom: 'Membre Test ' + Date.now(),
+                email: 'test' + Date.now() + '@example.com'
+            };
+            
+            try {
+                resultDiv.textContent = '⏳ Création en cours...';
+                const response = await fetch(`${API_URL}/membres`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(membre)
+                });
+                const data = await response.json();
+                displayResult('POST', '/membres', membre, data, response.status);
+            } catch (error) {
+                displayError('POST', '/membres', error);
+            }
+        }
+
+        async function testUpdateMembre() {
+            const id = prompt('👤 Entrez un ID membre à modifier:', '1');
+            if (!id) return;
+            
+            const membre = {
+                nom: 'Nom Modifié',
+                email: 'modifie@example.com',
+                maxEmprunts: 5
+            };
+            
+            try {
+                resultDiv.textContent = '⏳ Modification en cours...';
+                const response = await fetch(`${API_URL}/membres/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(membre)
+                });
+                const data = await response.json();
+                displayResult('PUT', `/membres/${id}`, membre, data, response.status);
+            } catch (error) {
+                displayError('PUT', `/membres/${id}`, error);
+            }
+        }
+
+        async function testDeleteMembre() {
+            const id = prompt('👤 Entrez un ID membre à supprimer:', '999');
+            if (!id || !confirm(`⚠️ Voulez-vous vraiment supprimer le membre ${id} ?`)) return;
+            
+            try {
+                resultDiv.textContent = '⏳ Suppression en cours...';
+                const response = await fetch(`${API_URL}/membres/${id}`, {
+                    method: 'DELETE'
+                });
+                const data = await response.json();
+                displayResult('DELETE', `/membres/${id}`, null, data, response.status);
+            } catch (error) {
+                displayError('DELETE', `/membres/${id}`, error);
+            }
+        }
+
+        // ========== TESTS EMPRUNTS ==========
+        
+        async function testCreateEmprunt() {
+            const emprunt = {
+                membreId: prompt('ID Membre:', '1'),
+                ISBN: prompt('ISBN du livre:', '978-2-1234-5680-3')
+            };
+            
+            if (!emprunt.membreId || !emprunt.ISBN) return;
+            
+            try {
+                resultDiv.textContent = '⏳ Création en cours...';
+                const response = await fetch(`${API_URL}/emprunts`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(emprunt)
+                });
+                const data = await response.json();
+                displayResult('POST', '/emprunts', emprunt, data, response.status);
+            } catch (error) {
+                displayError('POST', '/emprunts', error);
+            }
+        }
+
+        async function testRetourEmprunt() {
+            const id = prompt('📖 Entrez un ID emprunt pour retour:', '1');
+            if (!id) return;
+            
+            const data = { action: 'retour' };
+            
+            try {
+                resultDiv.textContent = '⏳ Retour en cours...';
+                const response = await fetch(`${API_URL}/emprunts/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                displayResult('PUT', `/emprunts/${id}`, data, result, response.status);
+            } catch (error) {
+                displayError('PUT', `/emprunts/${id}`, error);
+            }
+        }
+
+        async function testProlongerEmprunt() {
+            const id = prompt('📖 Entrez un ID emprunt à prolonger:', '1');
+            if (!id) return;
+            
+            const jours = prompt('Nombre de jours de prolongation:', '7');
+            const data = { action: 'prolonger', jours: parseInt(jours) };
+            
+            try {
+                resultDiv.textContent = '⏳ Prolongation en cours...';
+                const response = await fetch(`${API_URL}/emprunts/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                displayResult('PUT', `/emprunts/${id}`, data, result, response.status);
+            } catch (error) {
+                displayError('PUT', `/emprunts/${id}`, error);
+            }
+        }
+
+        // ========== TESTS RESERVATIONS ==========
+        
+        async function testCreateReservation() {
+            const reservation = {
+                membreId: prompt('ID Membre:', '1'),
+                ISBN: prompt('ISBN du livre:', '978-2-1234-5680-4')
+            };
+            
+            if (!reservation.membreId || !reservation.ISBN) return;
+            
+            try {
+                resultDiv.textContent = '⏳ Création en cours...';
+                const response = await fetch(`${API_URL}/reservations`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(reservation)
+                });
+                const data = await response.json();
+                displayResult('POST', '/reservations', reservation, data, response.status);
+            } catch (error) {
+                displayError('POST', '/reservations', error);
+            }
+        }
+
+        async function testUpdateReservation() {
+            const id = prompt('📑 Entrez un ID réservation:', 'R123');
+            if (!id) return;
+            
+            const action = prompt('Action (confirmer/annuler/terminer):', 'confirmer');
+            const data = { action: action };
+            
+            try {
+                resultDiv.textContent = '⏳ Mise à jour en cours...';
+                const response = await fetch(`${API_URL}/reservations/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                displayResult('PUT', `/reservations/${id}`, data, result, response.status);
+            } catch (error) {
+                displayError('PUT', `/reservations/${id}`, error);
+            }
+        }
+
+        async function testDeleteReservation() {
+            const id = prompt('📑 Entrez un ID réservation à supprimer:', 'R123');
+            if (!id || !confirm(`⚠️ Voulez-vous vraiment supprimer la réservation ${id} ?`)) return;
+            
+            try {
+                resultDiv.textContent = '⏳ Suppression en cours...';
+                const response = await fetch(`${API_URL}/reservations/${id}`, {
+                    method: 'DELETE'
+                });
+                const data = await response.json();
+                displayResult('DELETE', `/reservations/${id}`, null, data, response.status);
+            } catch (error) {
+                displayError('DELETE', `/reservations/${id}`, error);
+            }
+        }
+
+        // ========== TESTS AMENDES ==========
+        
+        async function testPayerAmende() {
+            const id = prompt('💰 Entrez un ID amende à payer:', '1');
+            if (!id) return;
+            
+            const data = { action: 'payer' };
+            
+            try {
+                resultDiv.textContent = '⏳ Paiement en cours...';
+                const response = await fetch(`${API_URL}/amendes/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+                displayResult('PUT', `/amendes/${id}`, data, result, response.status);
+            } catch (error) {
+                displayError('PUT', `/amendes/${id}`, error);
+            }
+        }
+
+        // ========== TESTS STATS ==========
+        
+        async function testGetStats(type) {
+            try {
+                resultDiv.textContent = '⏳ Chargement des statistiques...';
+                const response = await fetch(`${API_URL}/stats/${type}`);
+                const data = await response.json();
+                displayResult('GET', `/stats/${type}`, null, data, response.status);
+            } catch (error) {
+                displayError('GET', `/stats/${type}`, error);
+            }
+        }
+
+        // Log initial
+        console.log('%c🚀 API Test Interface Loaded', 'color: #0066cc; font-size: 16px; font-weight: bold;');
+        console.log('API URL:', API_URL);
+    </script>
+</body>
+</html>

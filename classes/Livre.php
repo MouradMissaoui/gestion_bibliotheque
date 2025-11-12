@@ -1,5 +1,4 @@
 
-<!-- classes/Livre.php -->
 <?php
 class Livre {
     private $conn;

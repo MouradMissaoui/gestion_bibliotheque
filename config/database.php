@@ -1,5 +1,5 @@
-<!-- config/database.php -->
 <?php
+//config/database.php -->
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 class Database {
